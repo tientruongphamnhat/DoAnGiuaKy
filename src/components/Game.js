@@ -1,5 +1,6 @@
 import React from 'react';
-import '../App.css';
+import { Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Board from './Board';
 
 function calculateWinner(squares, i) {
@@ -186,16 +187,6 @@ class Game extends React.Component {
     }
 
     squares[i] = xIsNext ? 'X' : 'O';
-    // this.setState({
-    //   history: history1.concat([
-    //     {
-    //       squares: squares.slice(),
-    //       location: i
-    //     }
-    //   ]),
-    //   stepNumber: history1.length,
-    //   xIsNext: !xIsNext
-    // });
 
     addCheck(squares, i);
     changeStepNumber(history1.length);
@@ -204,11 +195,14 @@ class Game extends React.Component {
     const iswin = calculateWinner(squares, i);
 
     if (iswin) {
-      // this.setState({
-      //   win: iswin
-      // });
+      addCheck(squares, i);
+      changeStepNumber(history1.length);
+      setXIsNext(!xIsNext);
+
       setWin(iswin);
+      return;
     }
+    this.randomBot(squares, i, history1.length);
   }
 
   jumpTo(step) {
@@ -229,14 +223,6 @@ class Game extends React.Component {
       return;
     }
     if (step !== stepNumber) {
-      // console.log(step);
-      // console.log('----------');
-      // console.log(stepNumber);
-      // this.setState({
-      //   stepNumber: step,
-      //   xIsNext: step % 2 === 0,
-      //   win: null
-      // });
       changeStepNumber(step);
       setXIsNext(step % 2 === 0);
       setWin(null);
@@ -245,10 +231,43 @@ class Game extends React.Component {
 
   sortHistory() {
     const { sort } = this.props;
-    // this.setState({
-    //   isAscending: !isAscending
-    // });
     sort();
+  }
+
+  randomBot(preSquares, local, length) {
+    const {
+      history,
+      stepNumber,
+      changeHistory,
+      setWin,
+      addCheck,
+      changeStepNumber,
+      setXIsNext,
+      xIsNext
+    } = this.props;
+
+    if (!preSquares && !local && !length) {
+      addCheck(preSquares, local);
+      const history1 = history.slice(0, stepNumber + 1);
+      const squares = preSquares;
+
+      let next = Math.floor(Math.random() * 400);
+
+      while (squares[next] !== null) {
+        next = Math.floor(Math.random() * 400);
+      }
+
+      squares[next] = !xIsNext ? 'X' : 'O';
+
+      addCheck(squares, next);
+      changeStepNumber(history1.length + 1);
+
+      const iswin = calculateWinner(squares, next);
+
+      if (iswin) {
+        setWin(iswin);
+      }
+    }
   }
 
   render() {
@@ -264,9 +283,9 @@ class Game extends React.Component {
         : 'Go to game start';
       return (
         <li key={move.Array}>
-          <button type="button" onClick={() => this.jumpTo(move)}>
+          <Button class="btn-info" onClick={() => this.jumpTo(move)}>
             {move === stepNumber ? <b>{desc}</b> : desc}
-          </button>
+          </Button>
         </li>
       );
     });
@@ -279,20 +298,26 @@ class Game extends React.Component {
     }
 
     return (
-      <div className="game">
-        <div className="game-board">
-          <Board
-            winningSquares={win ? win.line : []}
-            squares={current.squares}
-            onClick={i => this.handleClick(i)}
-          />
-        </div>
-        <div className="game-info">
-          <div>{status}</div>
-          <ol>{isAscending ? moves : moves.reverse()}</ol>
-          <button type="button" onClick={() => this.sortHistory()}>
-            Sort by: {!isAscending ? 'Ascending' : 'Descending'}
-          </button>
+      <div className="jumbotron">
+        <div className="container d-flex mr-4 ">
+          <div className="game-board">
+            <Board
+              winningSquares={win ? win.line : []}
+              squares={current.squares}
+              onClick={i => this.handleClick(i)}
+            />
+          </div>
+          <div className="ml-3">
+            <div>
+              <div>{status}</div>
+            </div>
+            <div className="mt-2">
+              <Button class="btn-info" onClick={() => this.sortHistory()}>
+                Sort by: {!isAscending ? 'Ascending' : 'Descending'}
+              </Button>
+            </div>
+            <ol className="mt-3">{isAscending ? moves : moves.reverse()}</ol>
+          </div>
         </div>
       </div>
     );
