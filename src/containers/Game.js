@@ -8,7 +8,7 @@ import {
   setXIsNext,
   setWin,
   sort
-} from '../actions';
+} from '../actions/index';
 
 const mapStateToProps = state => ({
   history: state.history,

@@ -1,58 +1,19 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
-import rootReducer from './reducers';
-// import App from './containers/App';
-import Login from './components/Login/index';
-import Register from './components/Register/index';
-import Home from './components/Home/index';
-import Game from './containers/Game';
+import App from './containers/App';
 import * as serviceWorker from './serviceWorker';
+import configStore from './configStore';
 
-const store = createStore(rootReducer);
+const store = configStore();
 
 ReactDOM.render(
   <Router>
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/Game">Game</Link>
-          </li>
-          <li>
-            <Link to="/Login">Login</Link>
-          </li>
-          <li>
-            <Link to="/Register">Register</Link>
-          </li>
-        </ul>
-      </nav>
-
-      {/* A <Switch> looks through its children <Route>s and
-              renders the first one that matches the current URL. */}
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/Register">
-          <Register />
-        </Route>
-        <Route path="/Game">
-          <Provider store={store}>
-            <Game />
-          </Provider>
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </div>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </Router>,
   document.getElementById('root')
 );
