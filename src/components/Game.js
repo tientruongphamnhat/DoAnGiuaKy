@@ -1,7 +1,28 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Board from './Board';
+
+function AlertF(props) {
+  const { alertWin } = props;
+
+  if (alertWin === 'youwon') {
+    return (
+      <Alert className="alert-info" variant="primary">
+        <Alert.Heading>congratulations! you won</Alert.Heading>
+      </Alert>
+    );
+  }
+  if (alertWin === 'youlose') {
+    return (
+      <Alert className="alert-info" variant="primary">
+        <Alert.Heading>Unfortunately! you lose</Alert.Heading>
+      </Alert>
+    );
+  }
+
+  return null;
+}
 
 function calculateWinner(squares, i) {
   let count1 = 0;
@@ -162,6 +183,13 @@ function calculateWinner(squares, i) {
 }
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      alertWin: 'notyet'
+    };
+  }
+
   handleClick(i) {
     const {
       history,
@@ -188,10 +216,6 @@ class Game extends React.Component {
 
     squares[i] = xIsNext ? 'X' : 'O';
 
-    addCheck(squares, i);
-    changeStepNumber(history1.length);
-    setXIsNext(!xIsNext);
-
     const iswin = calculateWinner(squares, i);
 
     if (iswin) {
@@ -199,20 +223,17 @@ class Game extends React.Component {
       changeStepNumber(history1.length);
       setXIsNext(!xIsNext);
 
+      this.setState({
+        alertWin: 'youwon'
+      });
       setWin(iswin);
       return;
     }
-    this.randomBot(squares, i, history1.length);
+    this.randomBot(squares);
   }
 
   jumpTo(step) {
-    const {
-      stepNumber,
-      changeStepNumber,
-      setXIsNext,
-      setWin,
-      history
-    } = this.props;
+    const { stepNumber, changeStepNumber, setWin, history } = this.props;
     if (step === history.length - 1) {
       changeStepNumber(step);
       const iswin = calculateWinner(
@@ -220,12 +241,19 @@ class Game extends React.Component {
         history[step].location
       );
       setWin(iswin);
+
+      this.setState({
+        alertWin: 'youwon'
+      });
+
       return;
     }
     if (step !== stepNumber) {
       changeStepNumber(step);
-      setXIsNext(step % 2 === 0);
       setWin(null);
+      this.setState({
+        alertWin: 'notyet'
+      });
     }
   }
 
@@ -234,40 +262,43 @@ class Game extends React.Component {
     sort();
   }
 
-  randomBot(preSquares, local, length) {
+  randomBot(preSquares) {
     const {
       history,
       stepNumber,
-      changeHistory,
       setWin,
       addCheck,
       changeStepNumber,
-      setXIsNext,
       xIsNext
     } = this.props;
 
-    if (!preSquares && !local && !length) {
-      addCheck(preSquares, local);
-      const history1 = history.slice(0, stepNumber + 1);
-      const squares = preSquares;
+    const history1 = history.slice(0, stepNumber + 1);
+    const squares = preSquares;
 
-      let next = Math.floor(Math.random() * 400);
+    let next = Math.floor(Math.random() * 400);
 
-      while (squares[next] !== null) {
-        next = Math.floor(Math.random() * 400);
-      }
-
-      squares[next] = !xIsNext ? 'X' : 'O';
-
-      addCheck(squares, next);
-      changeStepNumber(history1.length + 1);
-
-      const iswin = calculateWinner(squares, next);
-
-      if (iswin) {
-        setWin(iswin);
-      }
+    while (squares[next] !== null) {
+      next = Math.floor(Math.random() * 400);
     }
+
+    squares[next] = !xIsNext ? 'X' : 'O';
+
+    addCheck(squares, next);
+    changeStepNumber(history1.length);
+
+    const iswin = calculateWinner(squares, next);
+
+    if (iswin) {
+      this.setState({
+        alertWin: 'youlose'
+      });
+      setWin(iswin);
+    }
+  }
+
+  renderAlert() {
+    const { alertWin } = this.state;
+    return <AlertF alertWin={alertWin} />;
   }
 
   render() {
@@ -299,24 +330,27 @@ class Game extends React.Component {
 
     return (
       <div className="jumbotron">
-        <div className="container d-flex mr-4 ">
-          <div className="game-board">
-            <Board
-              winningSquares={win ? win.line : []}
-              squares={current.squares}
-              onClick={i => this.handleClick(i)}
-            />
-          </div>
-          <div className="ml-3">
-            <div>
-              <div>{status}</div>
+        {this.renderAlert()}
+        <div>
+          <div className="container d-flex mr-4 ">
+            <div className="game-board">
+              <Board
+                winningSquares={win ? win.line : []}
+                squares={current.squares}
+                onClick={i => this.handleClick(i)}
+              />
             </div>
-            <div className="mt-2">
-              <Button class="btn-info" onClick={() => this.sortHistory()}>
-                Sort by: {!isAscending ? 'Ascending' : 'Descending'}
-              </Button>
+            <div className="ml-3">
+              <div>
+                <div>{status}</div>
+              </div>
+              <div className="mt-2">
+                <Button class="btn-info" onClick={() => this.sortHistory()}>
+                  Sort by: {!isAscending ? 'Ascending' : 'Descending'}
+                </Button>
+              </div>
+              <ol className="mt-3">{isAscending ? moves : moves.reverse()}</ol>
             </div>
-            <ol className="mt-3">{isAscending ? moves : moves.reverse()}</ol>
           </div>
         </div>
       </div>
