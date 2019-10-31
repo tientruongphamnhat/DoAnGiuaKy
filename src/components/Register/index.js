@@ -60,7 +60,6 @@ class Register extends React.Component {
     // http://localhost:5000/users/register
     // https://btcn6.herokuapp.com/users/register
     fetch('http://localhost:5000/users/register', {
-      // mode: 'no-cors',
       method: 'post',
       headers: {
         Accept: 'application/json',
@@ -106,25 +105,25 @@ class Register extends React.Component {
             {this.renderAlert()}
             <Form className="mx-auto" onSubmit={e => this.handleSubmit(e)}>
               <h2>
-                <span className="font-weight-bold">Đăng Ký</span>
+                <span className="font-weight-bold">Register</span>
               </h2>
               <FormGroup controlId="formBasicEmail">
-                <Form.Label className="username">Địa chỉ Email</Form.Label>
+                <Form.Label className="username">Email</Form.Label>
                 <Form.Control type="email" placeholder="Nhập email" />
               </FormGroup>
               <FormGroup controlId="formBasicName">
-                <Form.Label>Họ và Tên</Form.Label>
-                <Form.Control type="input" placeholder="Họ và tên" />
+                <Form.Label>Full Name</Form.Label>
+                <Form.Control type="input" placeholder="full name" />
               </FormGroup>
               <FormGroup controlId="formBasicPassword">
-                <Form.Label>Mật Khẩu</Form.Label>
-                <Form.Control type="password" placeholder="Mật khẩu" />
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" placeholder="password" />
               </FormGroup>
               <Button variant="primary" type="submit">
-                Đăng ký
+                Resgister
               </Button>
               <Link to="/login" className="btn btn-link">
-                Đăng nhập
+                LogIn
               </Link>
             </Form>
           </div>

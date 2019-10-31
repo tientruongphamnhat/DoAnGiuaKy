@@ -1,18 +1,23 @@
 import fetch from 'cross-fetch';
 
-export const receiveUser = user => ({
-  type: 'RECEIVE_USER',
+export const getUser = user => ({
+  type: 'GET_USER',
   payload: {
     user
   }
 });
 
+export const loginFailed = message => ({
+  type: 'LOGIN_FAILED',
+  payload: {
+    message
+  }
+});
+
 export const callAPILogin = (email, password) => {
-  console.log('-----xx', email);
-  console.log('-----yy', password);
   let res = true;
   return dispatch => {
-    fetch('https://api-jwt-1612700.herokuapp.com/users/login', {
+    fetch('http://localhost:5000/users/login', {
       method: 'post',
       headers: {
         Accept: 'application/json',
@@ -32,13 +37,15 @@ export const callAPILogin = (email, password) => {
       })
       .then(response => {
         if (res) {
-          dispatch(receiveUser(response));
+          dispatch(getUser(response));
+        } else {
+          dispatch(loginFailed(response.message));
         }
       });
   };
 };
 
-export const logout = () => ({
+export const actionslogOut = () => ({
   type: 'LOGOUT',
   payload: {}
 });

@@ -8,14 +8,30 @@ import {
 } from 'react-social-login-buttons';
 
 function AlertF(props) {
-  const { isAlert } = props;
+  const { kindAlert, message } = props;
 
-  if (isAlert) {
+  if (kindAlert === 'missFill') {
     return (
       <Alert className="alert-info" variant="primary">
         <Alert.Heading>
           Oh snap! Change a few things up and try submitting again.!
         </Alert.Heading>
+      </Alert>
+    );
+  }
+  if (kindAlert === 'failed') {
+    return (
+      <Alert variant="danger">
+        <Alert.Heading>You got an error!</Alert.Heading>
+        <p>{message};</p>
+      </Alert>
+    );
+  }
+  if (kindAlert === 'success') {
+    return (
+      <Alert variant="success">
+        <Alert.Heading>Login Successfully</Alert.Heading>
+        Go To Home <Link to="/">HomePage</Link>
       </Alert>
     );
   }
@@ -26,7 +42,7 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAlert: false
+      kindAlert: 'normal'
     };
   }
 
@@ -38,7 +54,7 @@ class Login extends React.Component {
 
     if (!email || !password) {
       this.setState({
-        isAlert: true
+        kindAlert: 'missFill'
       });
       return;
     }
@@ -47,8 +63,15 @@ class Login extends React.Component {
   };
 
   renderAlert() {
-    const { isAlert } = this.state;
-    return <AlertF isAlert={isAlert} />;
+    const { kindAlert } = this.state;
+    const { user } = this.props;
+    if (Object.keys(user).length === 0) {
+      return <AlertF kindAlert={kindAlert} />;
+    }
+    if (Object.keys(user).length === 1) {
+      return <AlertF kindAlert="failed" message={user.message} />;
+    }
+    return <AlertF kindAlert="success" message={user.message} />;
   }
 
   render() {
@@ -58,21 +81,21 @@ class Login extends React.Component {
           {this.renderAlert()}
           <Form className="mx-auto" onSubmit={e => this.handleSubmit(e)}>
             <h2>
-              <span className="font-weight-bold">Đăng Nhập</span>
+              <span className="font-weight-bold">Log In</span>
             </h2>
             <FormGroup controlId="formBasicEmail">
-              <Form.Label>Địa chỉ Email</Form.Label>
-              <Form.Control type="email" placeholder="Nhập email" />
+              <Form.Label>Email</Form.Label>
+              <Form.Control type="email" placeholder="Fill your email" />
             </FormGroup>
             <FormGroup controlId="formBasicPassword">
-              <Form.Label>Mật Khẩu</Form.Label>
-              <Form.Control type="password" placeholder="Mật khẩu" />
+              <Form.Label>Password</Form.Label>
+              <Form.Control type="password" placeholder="Fill your pasword" />
             </FormGroup>
             <Button variant="primary" type="submit">
-              Đăng nhập
+              LogIn
             </Button>
             <Link to="/register" className="btn btn-link">
-              Đăng Ký
+              Resgister
             </Link>
           </Form>
           <div className="container d-flex col-sm-12 pt-3">
