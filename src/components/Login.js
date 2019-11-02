@@ -7,6 +7,9 @@ import {
   GoogleLoginButton
 } from 'react-social-login-buttons';
 
+// import FaceBookLogin from 'react-facebook-login';
+// import { GoogleLogin, GoogleLogout } from 'react-google-login';
+
 function AlertF(props) {
   const { kindAlert, message } = props;
 
@@ -31,7 +34,6 @@ function AlertF(props) {
     return (
       <Alert variant="success">
         <Alert.Heading>Login Successfully</Alert.Heading>
-        Go To Home <Link to="/">HomePage</Link>
       </Alert>
     );
   }
@@ -75,6 +77,13 @@ class Login extends React.Component {
   }
 
   render() {
+    // const responseFacebook = response => {
+    //   console.log(response);
+    // };
+
+    // const responseGoogle = response => {
+    //   console.log('-------', response);
+    // };
     return (
       <div className="jumbotron">
         <div className="container col-md-5">
@@ -101,6 +110,39 @@ class Login extends React.Component {
           <div className="container d-flex col-sm-12 pt-3">
             <FacebookLoginButton />
             <GoogleLoginButton />
+            {/* <FaceBookLogin
+                appId="2819261834771301"
+                render={renderProps => (
+                  <FacebookLoginButton
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                  />
+                )}
+                fields="name,email,picture"
+                callback={responseFacebook}
+              />
+            </div> */}
+
+            {/* <div>
+              <GoogleLogin
+                clientId="1006977474752-1500gbmgb32u47t71vrutbr4jdjo8khm.apps.googleusercontent.com"
+                render={renderProps => (
+                  <GoogleLoginButton
+                    onClick={renderProps.onClick}
+                    disabled={renderProps.disabled}
+                  />
+                )}
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+              />
+            </div> */}
+            {/* <div>
+              <GoogleLogout
+                clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                buttonText="Logout"
+                onLogoutSuccess={logout}
+              ></GoogleLogout>
+            </div> */}
           </div>
         </div>
       </div>

@@ -45,6 +45,37 @@ export const callAPILogin = (email, password) => {
   };
 };
 
+export const changeInfo = (email, name) => {
+  let res = true;
+  return dispatch => {
+    fetch('http://localhost:5000/users/changeInfo', {
+      method: 'post',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify({
+        email,
+        name
+      })
+    })
+      .then(response => {
+        if (response.status !== 200) {
+          res = false;
+        }
+        return response.json();
+      })
+      .then(response => {
+        if (res) {
+          dispatch(getUser(response));
+        } else {
+          dispatch(loginFailed(response.message));
+        }
+      });
+  };
+};
+
 export const actionslogOut = () => ({
   type: 'LOGOUT',
   payload: {}

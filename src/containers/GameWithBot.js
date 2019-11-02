@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Game from '../components/Game';
+import GameWithBot from '../components/GameWithBot';
 
 import {
   changeHistory,
@@ -8,7 +8,7 @@ import {
   setXIsNext,
   setWin,
   sort
-} from '../actions/index';
+} from '../actions/gameWithBot';
 
 const mapStateToProps = state => ({
   history: state.history,
@@ -30,4 +30,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Game);
+)(GameWithBot);

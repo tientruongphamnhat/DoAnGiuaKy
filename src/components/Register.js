@@ -109,7 +109,7 @@ class Register extends React.Component {
               </h2>
               <FormGroup controlId="formBasicEmail">
                 <Form.Label className="username">Email</Form.Label>
-                <Form.Control type="email" placeholder="Nhập email" />
+                <Form.Control type="email" placeholder="email" />
               </FormGroup>
               <FormGroup controlId="formBasicName">
                 <Form.Label>Full Name</Form.Label>

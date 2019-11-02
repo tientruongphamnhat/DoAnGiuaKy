@@ -1,19 +1,19 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-
-import Game from '../containers/Game';
+import GameWithBot from '../containers/GameWithBot';
+import GameWithOthers from '../containers/GameWithOthers';
 import Login from '../containers/Login';
-import Register from './Register/index';
-import Home from './Home/index';
+import Register from './Register';
+import Home from '../containers/Home';
 
 class PVRoute extends React.Component {
-  PrivateRoute = ({ cb }) => {
+  PrivateRoute = ({ children }) => {
     const { user } = this.props;
     return (
       <Route
         render={({ location }) =>
-          Object.keys(user) > 1 ? (
-            cb
+          Object.keys(user).length > 1 ? (
+            children
           ) : (
             <Redirect
               to={{
@@ -30,11 +30,15 @@ class PVRoute extends React.Component {
   render() {
     return (
       <Switch>
-        <this.PrivateRoute path="/game">
-          <Game />
+        <this.PrivateRoute path="/GameWithBot">
+          <GameWithBot />
         </this.PrivateRoute>
-
-        <Route exact path="/" render={() => <Home />} />
+        <this.PrivateRoute path="/GameWithOthers">
+          <GameWithOthers />
+        </this.PrivateRoute>
+        <Route exact path="/">
+          <Home />
+        </Route>
         <Route path="/Login">
           <Login />
         </Route>

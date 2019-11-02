@@ -1,17 +1,15 @@
 import { connect } from 'react-redux';
-import Login from '../components/Login';
-
-import { callAPILogin } from '../actions/user.actions';
+import Home from '../components/Home';
+import { changeInfo } from '../actions/user.actions';
 
 const mapStateToProps = state => ({
   user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
-  login: (email, password) => dispatch(callAPILogin(email, password))
+  changeInfo: (email, name) => dispatch(changeInfo(email, name))
 });
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
+)(Home);
