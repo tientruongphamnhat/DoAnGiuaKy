@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import Home from '../components/Home';
-import { changeInfo } from '../actions/user.actions';
+import { changeName, changePassword } from '../actions/user.actions';
 
 const mapStateToProps = state => ({
   user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeInfo: (email, name) => dispatch(changeInfo(email, name))
+  changeName: (email, name) => dispatch(changeName(email, name)),
+  changePassword: (email, password) => dispatch(changePassword(email, password))
 });
 export default connect(
   mapStateToProps,

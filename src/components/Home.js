@@ -1,6 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form, Button, Image, FormGroup, Alert } from 'react-bootstrap';
+import { Form, Button, Card, FormGroup, Alert } from 'react-bootstrap';
 
 function AlertF(props) {
   const { kindAlert, message } = props;
@@ -40,8 +40,8 @@ class Home extends React.Component {
     };
   }
 
-  handleSubmit = e => {
-    const { changeInfo, user } = this.props;
+  handleSubmitChangeName = e => {
+    const { changeName, user } = this.props;
     e.preventDefault();
     const name = e.target.formBasicName.value;
 
@@ -52,7 +52,25 @@ class Home extends React.Component {
       return;
     }
 
-    changeInfo(user.user.email, name);
+    changeName(user.user.email, name);
+    this.setState({
+      kindAlert: 'success'
+    });
+  };
+
+  handleSubmitChangePassword = e => {
+    const { changePassword, user } = this.props;
+    e.preventDefault();
+    const password = e.target.formBasicPassword.value;
+
+    if (!password) {
+      this.setState({
+        kindAlert: 'missFill'
+      });
+      return;
+    }
+
+    changePassword(user.user.email, password);
     this.setState({
       kindAlert: 'success'
     });
@@ -81,17 +99,30 @@ class Home extends React.Component {
       return (
         <>
           {this.renderAlert()}
-          <div className="d-flex">
+          <div className=" container d-flex">
             {/* <Image>Image</Image> */}
-            <Form onSubmit={e => this.handleSubmit(e)}>
-              <FormGroup controlId="formBasicName">
-                <Form.Label>Full Name</Form.Label>
-                <Form.Control type="input" placeholder={user.user.name} />
-              </FormGroup>
-              <Button variant="primary" type="submit">
-                Change
-              </Button>
-            </Form>
+            <div>
+              <Form onSubmit={e => this.handleSubmitChangeName(e)}>
+                <FormGroup controlId="formBasicName">
+                  <Form.Label>Full Name</Form.Label>
+                  <Form.Control type="input" placeholder={user.user.name} />
+                </FormGroup>
+                <Button variant="primary" type="submit">
+                  Change
+                </Button>
+              </Form>
+            </div>
+            <div className="ml-3">
+              <Form onSubmit={e => this.handleSubmitChangePassword(e)}>
+                <FormGroup controlId="formBasicPassword">
+                  <Form.Label>New password</Form.Label>
+                  <Form.Control type="password" placeholder="new password" />
+                </FormGroup>
+                <Button variant="primary" type="submit">
+                  Change
+                </Button>
+              </Form>
+            </div>
           </div>
         </>
       );

@@ -45,10 +45,10 @@ export const callAPILogin = (email, password) => {
   };
 };
 
-export const changeInfo = (email, name) => {
+export const changeName = (email, name) => {
   let res = true;
   return dispatch => {
-    fetch('http://localhost:5000/users/changeInfo', {
+    fetch('http://localhost:5000/users/changeName', {
       method: 'post',
       headers: {
         Accept: 'application/json',
@@ -58,6 +58,37 @@ export const changeInfo = (email, name) => {
       body: JSON.stringify({
         email,
         name
+      })
+    })
+      .then(response => {
+        if (response.status !== 200) {
+          res = false;
+        }
+        return response.json();
+      })
+      .then(response => {
+        if (res) {
+          dispatch(getUser(response));
+        } else {
+          dispatch(loginFailed(response.message));
+        }
+      });
+  };
+};
+
+export const changePassword = (email, password) => {
+  let res = true;
+  return dispatch => {
+    fetch('http://localhost:5000/users/changePassword', {
+      method: 'post',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify({
+        email,
+        password
       })
     })
       .then(response => {

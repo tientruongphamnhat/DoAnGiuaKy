@@ -48,7 +48,7 @@ class Register extends React.Component {
     const email = e.target.formBasicEmail.value;
     const name = e.target.formBasicName.value;
     const password = e.target.formBasicPassword.value;
-    let check = true;
+    let res = true;
 
     if (!email || !name || !password) {
       this.setState({
@@ -74,12 +74,12 @@ class Register extends React.Component {
     })
       .then(response => {
         if (response.status !== 200) {
-          check = false;
+          res = false;
         }
         return response.json();
       })
       .then(response => {
-        if (!check) {
+        if (!res) {
           this.setState({
             kindAlert: 'failed',
             message: response.message
