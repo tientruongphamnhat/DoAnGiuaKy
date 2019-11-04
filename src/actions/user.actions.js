@@ -48,7 +48,7 @@ export const callAPILogin = (email, password) => {
 export const changeName = (email, name) => {
   let res = true;
   return dispatch => {
-    fetch('http://localhost:5000/users/changeName', {
+    fetch('https://btcn6.herokuapp.com/users/changeName', {
       method: 'post',
       headers: {
         Accept: 'application/json',
@@ -79,7 +79,7 @@ export const changeName = (email, name) => {
 export const changePassword = (email, password) => {
   let res = true;
   return dispatch => {
-    fetch('http://localhost:5000/users/changePassword', {
+    fetch('https://btcn6.herokuapp.com/users/changePassword', {
       method: 'post',
       headers: {
         Accept: 'application/json',
