@@ -233,7 +233,14 @@ class GameWithBot extends React.Component {
   }
 
   jumpTo(step) {
-    const { stepNumber, changeStepNumber, setWin, history } = this.props;
+    const {
+      stepNumber,
+      changeStepNumber,
+      setWin,
+      history,
+      setXIsNext
+    } = this.props;
+
     if (step === history.length - 1) {
       changeStepNumber(step);
       const iswin = calculateWinner(
@@ -248,7 +255,9 @@ class GameWithBot extends React.Component {
 
       return;
     }
+
     if (step !== stepNumber) {
+      setXIsNext('X');
       changeStepNumber(step);
       setWin(null);
       this.setState({
@@ -268,8 +277,7 @@ class GameWithBot extends React.Component {
       stepNumber,
       setWin,
       addCheck,
-      changeStepNumber,
-      xIsNext
+      changeStepNumber
     } = this.props;
 
     const history1 = history.slice(0, stepNumber + 1);
@@ -281,7 +289,7 @@ class GameWithBot extends React.Component {
       next = Math.floor(Math.random() * 400);
     }
 
-    squares[next] = !xIsNext ? 'X' : 'O';
+    squares[next] = 'O';
 
     addCheck(squares, next);
     changeStepNumber(history1.length);
