@@ -17,7 +17,7 @@ export const loginFailed = message => ({
 export const callAPILogin = (email, password) => {
   let res = true;
   return dispatch => {
-    fetch('http://localhost:5000/users/login', {
+    fetch('https://btcn6.herokuapp.com/users/login', {
       method: 'post',
       headers: {
         Accept: 'application/json',

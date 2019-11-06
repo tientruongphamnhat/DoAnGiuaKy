@@ -59,7 +59,7 @@ class Register extends React.Component {
 
     // http://localhost:5000/users/register
     // https://btcn6.herokuapp.com/users/register
-    fetch('http://localhost:5000/users/register', {
+    fetch('https://btcn6.herokuapp.com/users/register', {
       method: 'post',
       headers: {
         Accept: 'application/json',
